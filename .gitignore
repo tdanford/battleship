@@ -1,6 +1,4 @@
 .gradle/
-gradlew.bat
-gradlew
 .idea/
 *.iml
 gradle/
