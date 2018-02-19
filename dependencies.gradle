@@ -1,0 +1,27 @@
+// Based on
+// https://github.com/granthenke/spark-demo/blob/master/gradle/dependencies.gradle
+//
+// This file exports a map called "libs" whose key is a library and value is the
+// locator (including version) for that library
+
+ext {
+    libs = [:]
+    versions = [:]
+}
+
+versions += [
+    eclipseCollections : '8.0.0',
+    commonsLang        : '3.5',
+    guava              : '19.0',
+    slf4j              : '1.7.21',
+    antlr              : '4.5.3'
+]
+
+libs += [
+    gsCollections        : ["org.eclipse.collections:eclipse-collections:${versions.eclipseCollections}",
+                            "org.eclipse.collections:eclipse-collections-api:${versions.eclipseCollections}"],
+    commonsLang          : "org.apache.commons:commons-lang3:${versions.commonsLang}",
+	guava                : "com.google.guava:guava:${versions.guava}",
+	slf4j                : "org.slf4j:slf4j-simple:${versions.slf4j}",
+    antlr                : "org.antlr:antlr4:${versions.antlr}"
+]

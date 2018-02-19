@@ -1,0 +1,11 @@
+.gradle/
+gradlew.bat
+gradlew
+.idea/
+*.iml
+gradle/
+build/
+out/
+
+src/generated/
+
