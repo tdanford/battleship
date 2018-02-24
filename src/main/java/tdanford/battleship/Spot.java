@@ -30,6 +30,8 @@ public class Spot implements Comparable<Spot> {
   private final int col;
 
   public Spot(final String str) {
+    Preconditions.checkArgument(str != null);
+
     final Matcher matcher = PATTERN.matcher(str);
     if (!matcher.matches()) { throw new IllegalArgumentException(str); }
     this.col = matcher.group(1).toUpperCase().charAt(0) - 'A';

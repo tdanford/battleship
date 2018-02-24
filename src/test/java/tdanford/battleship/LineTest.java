@@ -22,9 +22,28 @@ import org.junit.Test;
 
 public class LineTest {
 
+  public static Line line(final String first, final String second) {
+    return new Line(new Spot(first), new Spot(second));
+  }
+
+  @Test
+  public void testStartFinishOrdering() {
+    assertThat(line("A1", "A5").getStart()).isEqualTo(new Spot("A1"));
+    assertThat(line("A1", "C1").getStart()).isEqualTo(new Spot("A1"));
+
+    assertThat(line("A1", "A5").getFinish()).isEqualTo(new Spot("A5"));
+    assertThat(line("A1", "C1").getFinish()).isEqualTo(new Spot("C1"));
+
+    assertThat(line("A5", "A1").getStart()).isEqualTo(new Spot("A1"));
+    assertThat(line("C1", "A1").getStart()).isEqualTo(new Spot("A1"));
+
+    assertThat(line("A5", "A1").getFinish()).isEqualTo(new Spot("A5"));
+    assertThat(line("C1", "A1").getFinish()).isEqualTo(new Spot("C1"));
+  }
+
   @Test
   public void testLineLength() {
-    assertThat(new Line(new Spot("A1"), new Spot("A1")).length()).isEqualTo(1);
-    assertThat(new Line(new Spot("A1"), new Spot("A5")).length()).isEqualTo(5);
+    assertThat(line("A1", "A1").length()).isEqualTo(1);
+    assertThat(line("A1", "A5").length()).isEqualTo(5);
   }
 }
