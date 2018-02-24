@@ -38,16 +38,14 @@ public class InteractivePlayer implements BattleshipPlayer {
   @Override
   public BattleshipAction chooseAction(final BattleshipState publicKnowledge) {
     final Pattern pattern = Pattern.compile("([A-Ja-j])([1-9]|10)");
-    Matcher matcher = null;
+    Matcher matcher;
+    String resp;
     do {
-      final String resp = terminal.query("Shot?");
+      resp = terminal.query("Shot?").toUpperCase();
       matcher = pattern.matcher(resp);
     } while (!matcher.matches());
 
-    final Spot spot = new Spot(
-      matcher.group(1).toUpperCase().charAt(0) - 'A',
-      Integer.parseInt(matcher.group(2))
-    );
+    final Spot spot = new Spot(resp);
 
     return new BattleshipAction(this, spot);
   }
@@ -67,10 +65,14 @@ public class InteractivePlayer implements BattleshipPlayer {
     final BattleshipState initialState,
     final BattleshipAction action
   ) {
-    final String hitOrMiss = terminal.query(action.spot.toString()).toLowerCase();
+    final String message = String.format(
+      "Computer: %s -> ?\n\t(enter: 'hit' or 'miss')", action.spot
+    );
+    final String hitOrMiss = terminal.query(message).toLowerCase();
 
     if ("hit".equals(hitOrMiss)) {
-      final String shipSunk = terminal.query("Sunk?").toUpperCase();
+      final String shipSunk = terminal.query("Ship sunk? (enter ship name, or blank)")
+        .toUpperCase();
 
       try {
         final Ship ship = Ship.valueOf(shipSunk);
