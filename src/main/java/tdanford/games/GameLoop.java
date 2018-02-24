@@ -14,21 +14,20 @@ public class GameLoop<
   private final List<P> players;
   private GS state;
   private int nextPlayer;
-  private GameEngine<A, GS, R, P> engine;
+  private Eng engine;
 
   public GameLoop(
     final Eng gameEngine,
     final GS initialState,
-    final GameEngine <A, GS, R, P> engine,
     final List<P> players
   ) {
-    this.players = new ArrayList<>(players);
+    this.engine = gameEngine;
     this.state = initialState;
+    this.players = new ArrayList<>(players);
     this.nextPlayer = 0;
-    this.engine = engine;
   }
 
-  public void turn() {
+  public boolean turn() {
     final P acting = players.get(nextPlayer);
 
     final A action = acting.chooseAction(state);
@@ -42,6 +41,8 @@ public class GameLoop<
     nextPlayer = (nextPlayer + 1) % players.size();
 
     state = response.updateState(state);
+
+    return true;
   }
 
 }

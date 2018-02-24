@@ -1,4 +1,4 @@
-package tdanford.battleship;
+package tdanford.battleship.games;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public class BattleshipEngine
     final int playerIdx,
     final BattleshipAction action
   ) {
-    return null;
+    return players.get(1-playerIdx).findResponse(initialState, action);
   }
 }
