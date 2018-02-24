@@ -1,7 +1,8 @@
 package tdanford.battleship;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
@@ -23,8 +24,48 @@ public class Main {
   }
 
   private static Collection<PlacedShip> randomShipPlacement() {
-    return Arrays.asList(
-      new PlacedShip(Ship.BATTLESHIP, new Line(new Spot("C1"), new Spot("C4")))
-    );
+    ArrayList<PlacedShip> ships = new ArrayList<>();
+
+    for (Ship s : Ship.values()) {
+      final PlacedShip placed = randomPlacedShip(s, ships);
+      ships.add(placed);
+    }
+
+    return ships;
+  }
+
+  private static Random rand = new Random();
+
+  private static PlacedShip randomPlacedShip(
+    final Ship ship,
+    final Collection<PlacedShip> previous
+  ) {
+    PlacedShip placed;
+    do {
+      placed = new PlacedShip(ship, randomLine(ship.getSize()));
+    } while(overlapsShip(placed, previous));
+
+    return placed;
+  }
+
+  private static boolean overlapsShip(final PlacedShip ship, final Collection<PlacedShip> placed) {
+    for (final PlacedShip ps : placed) {
+      if (ps.getLocation().intersects(ship.getLocation())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static Line randomLine(final int length) {
+    boolean vertical = rand.nextBoolean();
+
+    int c1 = vertical ? rand.nextInt(10) : rand.nextInt(10 - length);
+    int r1 = vertical ? rand.nextInt(10 - length) + 1 : rand.nextInt(10) + 1;
+
+    int c2 = vertical ? c1 : c1 + length - 1;
+    int r2 = vertical ? r1 + length - 1 : r1;
+
+    return new Line(new Spot(c1, r2), new Spot(c2, r2));
   }
 }

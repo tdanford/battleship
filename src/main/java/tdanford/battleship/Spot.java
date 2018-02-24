@@ -21,11 +21,16 @@ public class Spot implements Comparable<Spot> {
   }
 
   public Spot(final int col, final int row) {
-    Preconditions.checkArgument(col >= 0);
-    Preconditions.checkArgument(row >= 0);
+    Preconditions.checkArgument(col >= 0 && col < 10);
+    Preconditions.checkArgument(row >= 1 && row <= 10);
 
     this.row = row;
     this.col = col;
+  }
+
+  public boolean isAdjacent(final Spot spot) {
+    return (row == spot.row && Math.abs(col - spot.col) == 1) ||
+      (col == spot.col && Math.abs(row - spot.row) == 1);
   }
 
   public int getRow() { return row; }

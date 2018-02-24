@@ -43,6 +43,28 @@ public class Line implements Comparable<Line>, Serializable {
     }
   }
 
+  public boolean isSpot() { return start.equals(finish); }
+
+  public Spot nextSpot() {
+    Preconditions.checkState(!isSpot());
+
+    if (isVertical()) {
+      return new Spot(finish.getCol(), finish.getRow() + 1);
+    } else {
+      return new Spot(finish.getCol() + 1, finish.getRow());
+    }
+  }
+
+  public Spot previousSpot() {
+    Preconditions.checkState(!isSpot());
+
+    if (isVertical()) {
+      return new Spot(finish.getCol(), finish.getRow() - 1);
+    } else {
+      return new Spot(finish.getCol() - 1, finish.getRow());
+    }
+  }
+
   public int hashCode() { return Objects.hash(start, finish); }
 
   public boolean equals(final Object o) {
