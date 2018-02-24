@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
+import com.google.common.base.Preconditions;
+
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
 import tdanford.battleship.games.ComputerPlayer;
@@ -74,6 +76,8 @@ public class Main {
   }
 
   private static Line randomLine(final int length) {
+    Preconditions.checkArgument(length > 0);
+
     boolean vertical = rand.nextBoolean();
 
     int c1 = vertical ? rand.nextInt(10) : rand.nextInt(10 - length);
@@ -82,6 +86,12 @@ public class Main {
     int c2 = vertical ? c1 : c1 + length - 1;
     int r2 = vertical ? r1 + length - 1 : r1;
 
-    return new Line(new Spot(c1, r2), new Spot(c2, r2));
+    final Line line = new Line(new Spot(c1, r1), new Spot(c2, r2));
+
+    Preconditions.checkState(line.length() == length,
+      String.format("Line %s length %d must equal " +
+      "parameter length %d", line, line.length(), length));
+
+    return line;
   }
 }

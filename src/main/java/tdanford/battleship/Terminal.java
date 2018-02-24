@@ -46,7 +46,13 @@ class StandardTerminal implements Terminal {
     output.print("> "); output.flush();
 
     try {
-      return input.readLine();
+      final String read = input.readLine();
+
+      if (read == null) {
+        System.exit(0);
+      }
+
+      return read;
 
     } catch (IOException e) {
       throw new RuntimeException("Couldn't read input", e);

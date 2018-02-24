@@ -31,7 +31,10 @@ public class PlacedShip {
   public PlacedShip(final Ship ship, final Line location) {
     Preconditions.checkArgument(ship != null);
     Preconditions.checkArgument(location != null);
-    Preconditions.checkArgument(ship.getSize() == location.length());
+
+    Preconditions.checkArgument(ship.getSize() == location.length(), String.format(
+      "Ship length %d must match line length %d", ship.getSize(), location.length()
+    ));
 
     this.ship = ship;
     this.location = location;

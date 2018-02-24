@@ -48,7 +48,7 @@ public class Line implements Comparable<Line>, Serializable {
     }
 
     Preconditions.checkState(isVertical() || isHorizontal());
-    Preconditions.checkState(!(isVertical() && isHorizontal()));
+    Preconditions.checkState(isSpot() || !isVertical() || !isHorizontal());
   }
 
   public int compareTo(final Line line) {

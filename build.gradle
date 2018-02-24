@@ -105,9 +105,6 @@ def configureShadowJarTask(
     File versionDir = file("${targetProject.buildDir}/git")
     File versionFile = file("${versionDir}/version.json")
 
-    // Configure a task to write out a file containing information about the current version,
-    // as retrieved from git. This file is pulled into the shadow JAR so that the version
-    // info will be available in the app.
     targetProject.task('writeVersionInformation') {
         inputs.property('gitCommitId', gitProperties.'git.commit.id')
         inputs.property('version', version)
