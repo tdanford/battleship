@@ -1,13 +1,13 @@
 
 A Battleship Game for Playing Against Kids
 
-== Building ==
+## Building
 
 ```bash
 ./gradlew :{clean,build}
 ```
 
-== Running ==
+## Running the Game
 
 ```bash 
 ➜  battleship git:(develop) ✗ java -jar build/libs/battleship-0.3-all.jar
