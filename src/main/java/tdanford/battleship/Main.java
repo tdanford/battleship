@@ -33,7 +33,7 @@ public class Main {
   public static void main(String[] args) {
 
     final BattleshipPlayer player1 = new InteractivePlayer(new StandardTerminal());
-    final BattleshipPlayer player2 = new DumbComputerPlayer(randomShipPlacement());
+    final BattleshipPlayer player2 = new DumbComputerPlayer("computer1", randomShipPlacement());
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 

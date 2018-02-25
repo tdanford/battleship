@@ -27,8 +27,8 @@ public class DumbComputerPlayer extends AutomatedPlayer {
 
   private static Random rand = new Random();
 
-  public DumbComputerPlayer(final Collection<PlacedShip> ships) {
-    super("Computer", ships);
+  public DumbComputerPlayer(final String name, final Collection<PlacedShip> ships) {
+    super(name, ships);
   }
 
   @Override
