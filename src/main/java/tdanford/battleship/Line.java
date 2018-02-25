@@ -65,9 +65,9 @@ public class Line implements Comparable<Line>, Serializable {
     Preconditions.checkState(!isSpot());
 
     if (isVertical()) {
-      return new Spot(finish.getCol(), finish.getRow() + 1);
+      return new Spot(finish.getRow() + 1, finish.getCol());
     } else {
-      return new Spot(finish.getCol() + 1, finish.getRow());
+      return new Spot(finish.getRow(), finish.getCol() + 1);
     }
   }
 
@@ -75,9 +75,9 @@ public class Line implements Comparable<Line>, Serializable {
     Preconditions.checkState(!isSpot());
 
     if (isVertical()) {
-      return new Spot(finish.getCol(), finish.getRow() - 1);
+      return new Spot(finish.getRow() - 1, finish.getCol());
     } else {
-      return new Spot(finish.getCol() - 1, finish.getRow());
+      return new Spot(finish.getRow(), finish.getCol() - 1);
     }
   }
 
@@ -140,11 +140,11 @@ public class Line implements Comparable<Line>, Serializable {
   public List<Spot> spots() {
     if (isVertical()) {
       return IntStream.rangeClosed(start.getRow(), finish.getRow())
-        .mapToObj(r -> new Spot(start.getCol(), r))
+        .mapToObj(r -> new Spot(r, start.getCol()))
         .collect(toList());
     } else {
       return IntStream.rangeClosed(start.getCol(), finish.getCol())
-        .mapToObj(c -> new Spot(c, start.getRow()))
+        .mapToObj(c -> new Spot(start.getRow(), c))
         .collect(toList());
     }
   }

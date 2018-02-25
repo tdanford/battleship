@@ -51,6 +51,6 @@ public class SpotsTest {
 
   @Theory
   public void spotsAreComparablyZeroWithThemselves(final Spot s) {
-    assertThat(s.compareTo(new Spot(s.getCol(), s.getRow()))).isEqualTo(0);
+    assertThat(s.compareTo(new Spot(s.getRow(), s.getCol()))).isEqualTo(0);
   }
 }

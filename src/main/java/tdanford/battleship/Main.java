@@ -86,13 +86,13 @@ public class Main {
 
     boolean vertical = rand.nextBoolean();
 
-    int c1 = vertical ? rand.nextInt(10) : rand.nextInt(10 - length);
-    int r1 = vertical ? rand.nextInt(10 - length) + 1 : rand.nextInt(10) + 1;
+    int c1 = vertical ? rand.nextInt(10) + 1 : rand.nextInt(10 - length) + 1;
+    int r1 = vertical ? rand.nextInt(10 - length) : rand.nextInt(10);
 
     int c2 = vertical ? c1 : c1 + length - 1;
     int r2 = vertical ? r1 + length - 1 : r1;
 
-    final Line line = new Line(new Spot(c1, r1), new Spot(c2, r2));
+    final Line line = new Line(new Spot(r1, c1), new Spot(r2, c2));
 
     Preconditions.checkState(line.length() == length,
       String.format("Line %s length %d must equal " +
