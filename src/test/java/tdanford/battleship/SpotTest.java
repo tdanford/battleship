@@ -25,11 +25,11 @@ public class SpotTest {
 
   @Test
   public void testGetters() {
-    assertThat(new Spot("A1").getRow()).isEqualTo(1);
-    assertThat(new Spot("A1").getCol()).isEqualTo(0);
+    assertThat(new Spot("A1").getCol()).isEqualTo(1);
+    assertThat(new Spot("A1").getRow()).isEqualTo(0);
 
-    assertThat(new Spot("A10").getRow()).isEqualTo(10);
-    assertThat(new Spot("A10").getCol()).isEqualTo(0);
+    assertThat(new Spot("A10").getCol()).isEqualTo(10);
+    assertThat(new Spot("A10").getRow()).isEqualTo(0);
   }
 
   @Test

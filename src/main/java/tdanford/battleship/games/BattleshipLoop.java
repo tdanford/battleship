@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 import tdanford.games.GameLoop;
 
-public class BattleshipLoop extends GameLoop<BattleshipState, BattleshipAction,
+public class BattleshipLoop extends GameLoop<BattleshipAction, BattleshipState,
   BattleshipResponse, BattleshipPlayer, BattleshipEngine> {
 
   public BattleshipLoop(final BattleshipPlayer player1, final BattleshipPlayer player2) {

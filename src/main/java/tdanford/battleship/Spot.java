@@ -43,28 +43,28 @@ public class Spot implements Comparable<Spot> {
 
     final Matcher matcher = PATTERN.matcher(str);
     if (!matcher.matches()) { throw new IllegalArgumentException(str); }
-    this.col = matcher.group(1).toUpperCase().charAt(0) - 'A';
-    this.row = Integer.parseInt(matcher.group(2));
+    this.row = matcher.group(1).toUpperCase().charAt(0) - 'A';
+    this.col = Integer.parseInt(matcher.group(2));
   }
 
   @JsonCreator
   public Spot(
-    @JsonProperty final int col,
-    @JsonProperty final int row
+    @JsonProperty final int row,
+    @JsonProperty final int col
   ) {
-    Preconditions.checkArgument(isLegalRow(row));
-    Preconditions.checkArgument(isLegalCol(col));
+    Preconditions.checkArgument(isLegalRow(row), String.format("Row %d isn't a legal value", row));
+    Preconditions.checkArgument(isLegalCol(col), String.format("Col %d isn't a legal value", col));
 
     this.row = row;
     this.col = col;
   }
 
   private static boolean isLegalRow(final int row) {
-    return row >= 1 && row <= 10;
+    return row >= 0 && row < 10;
   }
 
   private static boolean isLegalCol(final int col) {
-    return col >= 0 && col < 10;
+    return col > 0 && col <= 10;
   }
 
   private static final List<Pair<Integer, Integer>> ADJACENT_DIFFS = Lists.mutable.of(
@@ -76,8 +76,8 @@ public class Spot implements Comparable<Spot> {
 
   public List<Spot> adjacencies() {
     return ADJACENT_DIFFS.stream()
-      .filter(p -> isLegalCol(col + p.getOne()) && isLegalRow(row + p.getTwo()))
-      .map(p -> new Spot(col + p.getOne(), row + p.getTwo()))
+      .filter(p -> isLegalRow(row + p.getOne()) && isLegalCol(col + p.getTwo()))
+      .map(p -> new Spot(row + p.getOne(), col + p.getTwo()))
       .collect(toList());
   }
 
@@ -99,14 +99,14 @@ public class Spot implements Comparable<Spot> {
   }
 
   public String toString() {
-    return Character.toChars('A' + col)[0] + String.valueOf(row);
+    return Character.toChars('A' + row)[0] + String.valueOf(col);
   }
 
   public int compareTo(final Spot s) {
-    if (s.col != col) {
-      return Integer.compare(col, s.col);
-    } else {
+    if (s.row != row) {
       return Integer.compare(row, s.row);
+    } else {
+      return Integer.compare(col, s.col);
     }
   }
 }

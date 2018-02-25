@@ -27,8 +27,8 @@ public class DumbComputerPlayer extends AutomatedPlayer {
 
   private static Random rand = new Random();
 
-  public DumbComputerPlayer(final Collection<PlacedShip> ships) {
-    super("Computer", ships);
+  public DumbComputerPlayer(final String name, final Collection<PlacedShip> ships) {
+    super(name, ships);
   }
 
   @Override
@@ -47,6 +47,6 @@ public class DumbComputerPlayer extends AutomatedPlayer {
   }
 
   private Spot randomShot(final Board board) {
-    return new Spot(rand.nextInt(10), rand.nextInt(10));
+    return new Spot(rand.nextInt(10), 1 + rand.nextInt(10));
   }
 }

@@ -16,8 +16,11 @@
 
 package tdanford.games;
 
+import java.util.Optional;
+
 /**
  * Super-class for "public knowledge" game state
  */
 public interface GameState {
+  Optional<? extends Player<?, ?, ?>> winningPlayer();
 }

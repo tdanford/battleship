@@ -76,8 +76,14 @@ public class BattleshipResponse implements Response<BattleshipState> {
 
     playerState = playerState.withBoard(newBoard);
 
-    playerState = sunk.map(playerState::withSunkShip).orElse(playerState);
+    BattleshipState newState = state.withPlayerState(player, playerState);
 
-    return state.withPlayerState(player, playerState);
+    if (sunk.isPresent()) {
+      final BattleshipPlayer otherPlayer = state.otherPlayer(player);
+      playerState = state.getPlayerState(otherPlayer).withSunkShip(sunk.get());
+      newState = newState.withPlayerState(otherPlayer, playerState);
+    }
+
+    return newState;
   }
 }

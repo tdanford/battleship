@@ -41,7 +41,8 @@ public class InteractivePlayer implements BattleshipPlayer {
     Matcher matcher;
     String resp;
     do {
-      resp = terminal.query("Shot?").toUpperCase();
+      final String message = publicKnowledge.getPlayerState(this).shots.printBoard() + "Shot?";
+      resp = terminal.query(message).toUpperCase();
       matcher = pattern.matcher(resp);
     } while (!matcher.matches());
 
