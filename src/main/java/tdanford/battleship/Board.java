@@ -59,6 +59,29 @@ public class Board {
     hits.addAll(hitIndices);
   }
 
+  public String printBoard() {
+    final StringBuilder sb = new StringBuilder();
+
+    sb.append("   ABCDEFGHIJ\n");
+
+    for (int r = 1; r <= 10; r++) {
+      sb.append(String.format("%02d ", r));
+
+      for (int c = 0; c < 10; c++) {
+        final Spot s = new Spot(c, r);
+        if (shotSet.contains(s)) {
+          sb.append(hits.contains(shotIndex(s)) ? "X" : "O");
+        } else {
+          sb.append(".");
+        }
+
+      }
+      sb.append("\n");
+    }
+
+    return sb.toString();
+  }
+
   public Board withShot(final Spot shot, final Boolean hit) {
     return new Board(
       Lists.mutable.ofAll(shotList).with(shot),
