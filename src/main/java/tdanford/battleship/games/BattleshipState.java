@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.collections.impl.factory.Maps;
@@ -27,23 +28,32 @@ import org.eclipse.collections.impl.factory.Sets;
 
 import tdanford.battleship.Board;
 import tdanford.battleship.Ship;
+import tdanford.games.Action;
 import tdanford.games.GameState;
+import tdanford.games.Player;
+import tdanford.games.Response;
 
 /**
  * The state of a battleship game is the state of all its players
  */
 public class BattleshipState implements GameState {
 
+  private final BattleshipPlayer[] playerArray;
   private final Map<BattleshipPlayer, PlayerState> players;
 
   public BattleshipState(final BattleshipPlayer... players) {
+    this.playerArray = players;
     this.players = new HashMap<>();
     for (final BattleshipPlayer player : players) {
       this.players.put(player, new PlayerState());
     }
   }
 
-  public BattleshipState(final Map<BattleshipPlayer, PlayerState> states) {
+  public BattleshipState(
+    final BattleshipPlayer[] array,
+    final Map<BattleshipPlayer, PlayerState> states
+  ) {
+    this.playerArray = array;
     this.players = states;
   }
 
@@ -53,8 +63,21 @@ public class BattleshipState implements GameState {
 
   public BattleshipState withPlayerState(final BattleshipPlayer player, final PlayerState state) {
     return new BattleshipState(
+      playerArray,
       Maps.immutable.ofMap(players).newWithKeyValue(player, state).toMap()
     );
+  }
+
+  @Override
+  public Optional<BattleshipPlayer> winningPlayer() {
+
+    for (int i = 0; i < 2; i++) {
+      if (players.get(playerArray[i]).isLost()) {
+        return Optional.of(playerArray[1 - i]);
+      }
+    }
+
+    return Optional.empty();
   }
 
   public static class PlayerState {
@@ -70,6 +93,10 @@ public class BattleshipState implements GameState {
     public PlayerState(final Board shots, final Set<Ship> sunk) {
       this.shots = shots;
       this.sunkShips = sunk;
+    }
+
+    public boolean isLost() {
+      return sunkShips.size() == 5;
     }
 
     public PlayerState withBoard(final Board newBoard) {

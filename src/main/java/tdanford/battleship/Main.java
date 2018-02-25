@@ -18,6 +18,7 @@ package tdanford.battleship;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 
 import com.google.common.base.Preconditions;
@@ -26,6 +27,7 @@ import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
 import tdanford.battleship.games.DumbComputerPlayer;
 import tdanford.battleship.games.InteractivePlayer;
+import tdanford.games.Player;
 
 public class Main {
 
@@ -36,9 +38,14 @@ public class Main {
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
-    while(loop.turn()) {
-      // do nothing
-    }
+    Optional<BattleshipPlayer> winner;
+
+    do {
+      winner = loop.turn();
+
+    } while (!winner.isPresent());
+
+    System.out.println(String.format("%s is the winner", winner));
   }
 
   private static Collection<PlacedShip> randomShipPlacement() {

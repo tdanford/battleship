@@ -18,10 +18,11 @@ package tdanford.games;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GameLoop<
-  GS extends GameState,
   A extends Action,
+  GS extends GameState,
   R extends Response<GS>,
   P extends Player<A, GS, R>,
   Eng extends GameEngine<A, GS, R, P>
@@ -43,7 +44,8 @@ public class GameLoop<
     this.nextPlayer = 0;
   }
 
-  public boolean turn() {
+  @SuppressWarnings("unchecked")
+  public Optional<P> turn() {
     final P acting = players.get(nextPlayer);
 
     final A action = acting.chooseAction(state);
@@ -58,7 +60,7 @@ public class GameLoop<
 
     state = response.updateState(state);
 
-    return true;
+    return (Optional<P>) state.winningPlayer();
   }
 
 }
