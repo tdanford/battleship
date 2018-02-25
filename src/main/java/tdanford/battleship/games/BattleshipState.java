@@ -54,6 +54,16 @@ public class BattleshipState implements GameState {
     this.players = states;
   }
 
+  public BattleshipPlayer otherPlayer(final BattleshipPlayer player) {
+    for (int i = 0; i < 2; i++) {
+      if (playerArray[i].equals(player)) {
+        return playerArray[1-i];
+      }
+    }
+
+    throw new IllegalArgumentException(String.format("Unknown player %s", player));
+  }
+
   public Collection<BattleshipPlayer> getPlayers() { return players.keySet(); }
 
   public PlayerState getPlayerState(final BattleshipPlayer player) { return players.get(player); }
