@@ -16,10 +16,19 @@
 
 package tdanford.battleship;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.collections.api.tuple.Pair;
+import org.eclipse.collections.impl.factory.Lists;
+import org.eclipse.collections.impl.tuple.Tuples;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 
 public class Spot implements Comparable<Spot> {
@@ -38,12 +47,38 @@ public class Spot implements Comparable<Spot> {
     this.row = Integer.parseInt(matcher.group(2));
   }
 
-  public Spot(final int col, final int row) {
-    Preconditions.checkArgument(col >= 0 && col < 10);
-    Preconditions.checkArgument(row >= 1 && row <= 10);
+  @JsonCreator
+  public Spot(
+    @JsonProperty final int col,
+    @JsonProperty final int row
+  ) {
+    Preconditions.checkArgument(isLegalRow(row));
+    Preconditions.checkArgument(isLegalCol(col));
 
     this.row = row;
     this.col = col;
+  }
+
+  private static boolean isLegalRow(final int row) {
+    return row >= 1 && row <= 10;
+  }
+
+  private static boolean isLegalCol(final int col) {
+    return col >= 0 && col < 10;
+  }
+
+  private static final List<Pair<Integer, Integer>> ADJACENT_DIFFS = Lists.mutable.of(
+    Tuples.pair(-1, 0),
+    Tuples.pair(1, 0),
+    Tuples.pair(0, -1),
+    Tuples.pair(0, 1)
+  );
+
+  public List<Spot> adjacencies() {
+    return ADJACENT_DIFFS.stream()
+      .filter(p -> isLegalCol(col + p.getOne()) && isLegalRow(row + p.getTwo()))
+      .map(p -> new Spot(col + p.getOne(), row + p.getTwo()))
+      .collect(toList());
   }
 
   public boolean isAdjacent(final Spot spot) {
