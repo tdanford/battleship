@@ -27,7 +27,6 @@ import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
 import tdanford.battleship.games.DumbComputerPlayer;
 import tdanford.battleship.games.InteractivePlayer;
-import tdanford.games.Player;
 
 public class Main {
 

@@ -28,10 +28,7 @@ import org.eclipse.collections.impl.factory.Sets;
 
 import tdanford.battleship.Board;
 import tdanford.battleship.Ship;
-import tdanford.games.Action;
 import tdanford.games.GameState;
-import tdanford.games.Player;
-import tdanford.games.Response;
 
 /**
  * The state of a battleship game is the state of all its players
