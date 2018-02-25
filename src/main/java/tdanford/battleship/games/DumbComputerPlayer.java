@@ -22,9 +22,10 @@ import java.util.Random;
 import tdanford.battleship.Board;
 import tdanford.battleship.PlacedShip;
 import tdanford.battleship.Spot;
-import tdanford.games.Player;
 
-public class DumbComputerPlayer extends ManagedStatePlayer {
+public class DumbComputerPlayer extends AutomatedPlayer {
+
+  private static Random rand = new Random();
 
   public DumbComputerPlayer(final Collection<PlacedShip> ships) {
     super("Computer", ships);
@@ -45,20 +46,7 @@ public class DumbComputerPlayer extends ManagedStatePlayer {
     return new BattleshipAction(this, shot);
   }
 
-  private static Random rand = new Random();
-
   private Spot randomShot(final Board board) {
     return new Spot(rand.nextInt(10), rand.nextInt(10));
-  }
-
-  @Override
-  public void registerResponse(
-    final Player<BattleshipAction, BattleshipState, BattleshipResponse> player,
-    final BattleshipState publicKnowledge,
-    final BattleshipAction act,
-    final BattleshipResponse response
-  ) {
-    // don't need to register a response, since the result of our action will
-    // arrive in the next BattleshipState value we see in chooseAction
   }
 }
