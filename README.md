@@ -59,3 +59,35 @@ All it does is choose a random location (where it hasn't shot before), and then 
 in a helper class called `BattleshipAction`.  
 
 It should be reasonably easy to re-define this method with some better logic; I'll be adding the ability to plug in arbitrary definitions for the computer player in the future.
+
+## Play Two Computers Against Each Other
+
+If you want to watch the computer play itself, run the program with the first argument being the word `computer`, i.e. 
+
+```bash
+% java -jar build/libs/battleship-0.3-all.jar computer
+```
+
+and you should see output like (for example), this: 
+
+```
+computer1: SHOT -> C3
+computer2: MISS
+computer2: SHOT -> D5
+computer1: HIT, SUNK DESTROYER
+computer1: SHOT -> F3
+computer2: MISS
+computer2: SHOT -> B3
+computer1: MISS
+computer1: SHOT -> C2
+computer2: MISS
+computer2: SHOT -> C5
+computer1: MISS
+computer1: SHOT -> G2
+computer2: MISS
+computer2: SHOT -> F2
+computer1: MISS
+computer1: SHOT -> B6
+computer2: HIT, SUNK SUB
+computer1 is the winner
+```
