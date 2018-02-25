@@ -24,7 +24,7 @@ import com.google.common.base.Preconditions;
 
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
-import tdanford.battleship.games.ComputerPlayer;
+import tdanford.battleship.games.DumbComputerPlayer;
 import tdanford.battleship.games.InteractivePlayer;
 
 public class Main {
@@ -32,7 +32,7 @@ public class Main {
   public static void main(String[] args) {
 
     final BattleshipPlayer player1 = new InteractivePlayer(new StandardTerminal());
-    final BattleshipPlayer player2 = new ComputerPlayer(randomShipPlacement());
+    final BattleshipPlayer player2 = new DumbComputerPlayer(randomShipPlacement());
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
