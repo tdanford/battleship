@@ -14,7 +14,8 @@ versions += [
     commonsLang        : '3.5',
     guava              : '19.0',
     slf4j              : '1.7.21',
-    antlr              : '4.5.3'
+    antlr              : '4.5.3',
+    jacksonVersion     : '2.6.7'
 ]
 
 libs += [
@@ -23,5 +24,10 @@ libs += [
     commonsLang          : "org.apache.commons:commons-lang3:${versions.commonsLang}",
 	guava                : "com.google.guava:guava:${versions.guava}",
 	slf4j                : "org.slf4j:slf4j-simple:${versions.slf4j}",
-    antlr                : "org.antlr:antlr4:${versions.antlr}"
+    antlr                : "org.antlr:antlr4:${versions.antlr}",
+    jackson              : "com.fasterxml.jackson.core:jackson-core:${versions.jacksonVersion}",
+    jacksonAnnotations   : "com.fasterxml.jackson.core:jackson-annotations:${versions.jacksonVersion}",
+    jacksonDatabind      : "com.fasterxml.jackson.core:jackson-databind:${versions.jacksonVersion}",
+    jacksonJaxrs         : "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${versions.jacksonVersion}",
+    jacksonYaml          : "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jacksonVersion}",
 ]

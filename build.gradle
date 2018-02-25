@@ -37,6 +37,10 @@ dependencies {
     compile libs.commonsLang
     compile libs.guava
     compile libs.slf4j
+    compile libs.jackson
+    compile libs.jacksonAnnotations
+    compile libs.jacksonDatabind
+    compile libs.jacksonYaml
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.8.0'
