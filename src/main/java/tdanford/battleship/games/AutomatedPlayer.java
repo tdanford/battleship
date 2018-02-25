@@ -23,8 +23,12 @@ import tdanford.games.Player;
 
 public abstract class AutomatedPlayer extends ManagedStatePlayer {
 
-  public AutomatedPlayer(final String name, final Collection<PlacedShip> ships) {
-    super(name, ships);
+  public AutomatedPlayer(
+    final String name,
+    final Collection<PlacedShip> ships,
+    final boolean verbose
+  ) {
+    super(name, ships, verbose);
   }
 
   @Override
