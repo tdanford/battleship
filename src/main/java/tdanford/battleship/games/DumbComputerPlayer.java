@@ -47,6 +47,6 @@ public class DumbComputerPlayer extends AutomatedPlayer {
   }
 
   private Spot randomShot(final Board board) {
-    return new Spot(rand.nextInt(10), rand.nextInt(10));
+    return new Spot(rand.nextInt(10), 1 + rand.nextInt(10));
   }
 }

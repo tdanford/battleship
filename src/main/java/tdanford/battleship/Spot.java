@@ -52,8 +52,8 @@ public class Spot implements Comparable<Spot> {
     @JsonProperty final int col,
     @JsonProperty final int row
   ) {
-    Preconditions.checkArgument(isLegalRow(row));
-    Preconditions.checkArgument(isLegalCol(col));
+    Preconditions.checkArgument(isLegalRow(row), String.format("Row %d isn't a legal value", row));
+    Preconditions.checkArgument(isLegalCol(col), String.format("Col %d isn't a legal value", col));
 
     this.row = row;
     this.col = col;
