@@ -24,17 +24,24 @@ import java.util.Set;
 import tdanford.battleship.PlacedShip;
 import tdanford.battleship.Spot;
 
-public abstract class ManagedStatePlayer implements BattleshipPlayer {
+public abstract class ManagedStatePlayer extends BattleshipPlayer {
 
-  private final String name;
   private final Set<PlacedShip> ships;
+  private boolean verbose;
 
-  public ManagedStatePlayer(final String name, final Collection<PlacedShip> ships) {
-    this.name = name;
+  public ManagedStatePlayer(
+    final String name,
+    final Collection<PlacedShip> ships,
+    final boolean verbose
+  ) {
+    super(name);
     this.ships = new HashSet<>(ships);
+    this.verbose = verbose;
   }
 
-  public String toString() { return name; }
+  public String toString() { return getName(); }
+
+  public boolean isVerbose() { return verbose; }
 
   private Optional<PlacedShip> findHitShip(final Spot spot) {
     for (final PlacedShip ship : ships) {
@@ -44,6 +51,12 @@ public abstract class ManagedStatePlayer implements BattleshipPlayer {
     }
 
     return Optional.empty();
+  }
+
+  protected void verboseSay(final String template, final Object... args) {
+    if (verbose) {
+      System.out.println(String.format("%s: %s", getName(), String.format(template, args)));
+    }
   }
 
   @Override
@@ -59,12 +72,15 @@ public abstract class ManagedStatePlayer implements BattleshipPlayer {
       ship.hitSpot(action.spot);
 
       if (ship.isSunk()) {
+        verboseSay("HIT, SUNK %s", ship.getShip());
         return new BattleshipResponse(action.player, action.spot, true, Optional.of(ship.getShip()));
       } else {
+        verboseSay("HIT");
         return new BattleshipResponse(action.player, action.spot, true, Optional.empty());
       }
 
     } else {
+      verboseSay("MISS");
       return new BattleshipResponse(action.player, action.spot, false, Optional.empty());
     }
   }

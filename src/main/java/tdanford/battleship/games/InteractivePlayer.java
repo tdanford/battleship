@@ -25,15 +25,14 @@ import tdanford.battleship.Spot;
 import tdanford.battleship.Terminal;
 import tdanford.games.Player;
 
-public class InteractivePlayer implements BattleshipPlayer {
+public class InteractivePlayer extends BattleshipPlayer {
 
   private final Terminal terminal;
 
   public InteractivePlayer(final Terminal terminal) {
+    super("Human");
     this.terminal = terminal;
   }
-
-  public String toString() { return "Human"; }
 
   @Override
   public BattleshipAction chooseAction(final BattleshipState publicKnowledge) {

@@ -27,8 +27,12 @@ public class DumbComputerPlayer extends AutomatedPlayer {
 
   private static Random rand = new Random();
 
-  public DumbComputerPlayer(final String name, final Collection<PlacedShip> ships) {
-    super(name, ships);
+  public DumbComputerPlayer(
+    final String name,
+    final Collection<PlacedShip> ships,
+    final boolean verbose
+  ) {
+    super(name, ships, verbose);
   }
 
   @Override
@@ -42,6 +46,8 @@ public class DumbComputerPlayer extends AutomatedPlayer {
     do {
       shot = randomShot(board);
     } while(!board.isNoShot(shot));
+
+    verboseSay("SHOT -> %s", shot);
 
     return new BattleshipAction(this, shot);
   }

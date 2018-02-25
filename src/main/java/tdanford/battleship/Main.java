@@ -32,8 +32,15 @@ public class Main {
 
   public static void main(String[] args) {
 
-    final BattleshipPlayer player1 = new InteractivePlayer(new StandardTerminal());
-    final BattleshipPlayer player2 = new DumbComputerPlayer("computer1", randomShipPlacement());
+    final boolean computersOnly = args.length > 0 && args[0].equals("computer");
+
+    final BattleshipPlayer player1 =
+      computersOnly
+        ? new DumbComputerPlayer("computer1", randomShipPlacement(), true)
+        : new InteractivePlayer(new StandardTerminal());
+
+    final BattleshipPlayer player2 =
+      new DumbComputerPlayer("computer2", randomShipPlacement(), computersOnly);
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
@@ -44,7 +51,7 @@ public class Main {
 
     } while (!winner.isPresent());
 
-    System.out.println(String.format("%s is the winner", winner));
+    System.out.println(String.format("%s is the winner", winner.get().getName()));
   }
 
   private static Collection<PlacedShip> randomShipPlacement() {

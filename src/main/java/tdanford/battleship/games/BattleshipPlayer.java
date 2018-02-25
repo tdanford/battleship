@@ -16,12 +16,32 @@
 
 package tdanford.battleship.games;
 
+import java.util.Objects;
+
 import tdanford.games.Player;
 
-public interface BattleshipPlayer
-  extends Player<BattleshipAction, BattleshipState, BattleshipResponse> {
+public abstract class BattleshipPlayer
+  implements Player<BattleshipAction, BattleshipState, BattleshipResponse> {
 
-  BattleshipResponse findResponse(BattleshipState initialState, BattleshipAction action);
+  private final String name;
+
+  public BattleshipPlayer(final String name) {
+    this.name = name;
+  }
+
+  public String getName() { return name; }
+
+  public String toString() { return name; }
+
+  public int hashCode() { return Objects.hash(name); }
+
+  public boolean equals(final Object o) {
+    if (!(o instanceof BattleshipPlayer)) { return false; }
+    final BattleshipPlayer p = (BattleshipPlayer) o;
+    return Objects.equals(name, p.name);
+  }
+
+  abstract BattleshipResponse findResponse(BattleshipState initialState, BattleshipAction action);
 }
 
 
