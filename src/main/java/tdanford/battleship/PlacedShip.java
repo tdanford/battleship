@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import com.google.common.base.Preconditions;
 
-public class PlacedShip {
+public class PlacedShip implements Comparable<PlacedShip> {
 
   private final Line location;
   private final Ship ship;
@@ -40,6 +40,15 @@ public class PlacedShip {
     this.location = location;
     this.unhitSpots = new ArrayList<>(location.spots());
     this.hitSpots = new ArrayList<>();
+  }
+
+  public boolean overlaps(final Iterable<PlacedShip> ships) {
+    for (final PlacedShip ship : ships) {
+      if (location.intersects(ship.getLocation())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Ship getShip() { return ship; }
@@ -64,4 +73,11 @@ public class PlacedShip {
     final PlacedShip p = (PlacedShip) o;
     return Objects.equals(ship, p.ship) && Objects.equals(location, p.location);
   }
+
+  public int compareTo(final PlacedShip p) {
+    if (!ship.equals(p.ship)) { return ship.compareTo(p.ship); }
+    return location.compareTo(p.location);
+  }
+
+  public String toString() { return String.format("%s@%s", ship, location); }
 }

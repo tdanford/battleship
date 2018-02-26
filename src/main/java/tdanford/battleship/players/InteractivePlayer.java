@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package tdanford.battleship.games;
+package tdanford.battleship.players;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -23,6 +23,10 @@ import java.util.regex.Pattern;
 import tdanford.battleship.Ship;
 import tdanford.battleship.Spot;
 import tdanford.battleship.Terminal;
+import tdanford.battleship.games.BattleshipAction;
+import tdanford.battleship.games.BattleshipPlayer;
+import tdanford.battleship.games.BattleshipResponse;
+import tdanford.battleship.games.BattleshipState;
 import tdanford.games.Player;
 
 public class InteractivePlayer extends BattleshipPlayer {

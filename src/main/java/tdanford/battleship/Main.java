@@ -16,31 +16,37 @@
 
 package tdanford.battleship;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.Random;
-
-import com.google.common.base.Preconditions;
 
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
-import tdanford.battleship.games.DumbComputerPlayer;
-import tdanford.battleship.games.InteractivePlayer;
+import tdanford.battleship.players.DumbComputerPlayer;
+import tdanford.battleship.players.InteractivePlayer;
 
 public class Main {
 
   public static void main(String[] args) {
 
     final boolean computersOnly = args.length > 0 && args[0].equals("computer");
+    final RandomUtils rand = new RandomUtils();
+
+    final ShipArrangement[] arrangements = new ShipArrangement[] {
+      rand.randomShipPlacement(),
+      rand.randomShipPlacement()
+    };
 
     final BattleshipPlayer player1 =
       computersOnly
-        ? new DumbComputerPlayer("computer1", randomShipPlacement(), true)
+        ? new DumbComputerPlayer("computer1", arrangements[0], true)
         : new InteractivePlayer(new StandardTerminal());
 
     final BattleshipPlayer player2 =
-      new DumbComputerPlayer("computer2", randomShipPlacement(), computersOnly);
+      new DumbComputerPlayer("computer2", arrangements[1], computersOnly);
+
+    if (computersOnly) {
+      System.out.println(String.format("%s: %s", player1.getName(), arrangements[0]));
+      System.out.println(String.format("%s: %s", player2.getName(), arrangements[1]));
+    }
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
@@ -54,57 +60,5 @@ public class Main {
     System.out.println(String.format("%s is the winner", winner.get().getName()));
   }
 
-  private static Collection<PlacedShip> randomShipPlacement() {
-    ArrayList<PlacedShip> ships = new ArrayList<>();
 
-    for (Ship s : Ship.values()) {
-      final PlacedShip placed = randomPlacedShip(s, ships);
-      ships.add(placed);
-    }
-
-    return ships;
-  }
-
-  private static Random rand = new Random();
-
-  private static PlacedShip randomPlacedShip(
-    final Ship ship,
-    final Collection<PlacedShip> previous
-  ) {
-    PlacedShip placed;
-    do {
-      placed = new PlacedShip(ship, randomLine(ship.getSize()));
-    } while(overlapsShip(placed, previous));
-
-    return placed;
-  }
-
-  private static boolean overlapsShip(final PlacedShip ship, final Collection<PlacedShip> placed) {
-    for (final PlacedShip ps : placed) {
-      if (ps.getLocation().intersects(ship.getLocation())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static Line randomLine(final int length) {
-    Preconditions.checkArgument(length > 0);
-
-    boolean vertical = rand.nextBoolean();
-
-    int c1 = vertical ? rand.nextInt(10) + 1 : rand.nextInt(10 - length) + 1;
-    int r1 = vertical ? rand.nextInt(10 - length) : rand.nextInt(10);
-
-    int c2 = vertical ? c1 : c1 + length - 1;
-    int r2 = vertical ? r1 + length - 1 : r1;
-
-    final Line line = new Line(new Spot(r1, c1), new Spot(r2, c2));
-
-    Preconditions.checkState(line.length() == length,
-      String.format("Line %s length %d must equal " +
-      "parameter length %d", line, line.length(), length));
-
-    return line;
-  }
 }
