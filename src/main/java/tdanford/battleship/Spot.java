@@ -72,6 +72,7 @@ public class Spot implements Comparable<Spot> {
     return col > 0 && col <= 10;
   }
 
+  @SuppressWarnings("unchecked")
   private static final List<Pair<Integer, Integer>> ADJACENT_DIFFS = Lists.mutable.of(
     Tuples.pair(-1, 0),
     Tuples.pair(1, 0),
@@ -145,7 +146,7 @@ public class Spot implements Comparable<Spot> {
 
     @Override
     public boolean hasNext() {
-      return row < 9 || col < 10;
+      return isLegalCol(col) && isLegalRow(row);
     }
 
     @Override
@@ -153,7 +154,7 @@ public class Spot implements Comparable<Spot> {
       final Spot spot = new Spot(row, col);
 
       col += 1;
-      if (col > 10) {
+      if (!isLegalCol(col)) {
         col = 1;
         row += 1;
       }

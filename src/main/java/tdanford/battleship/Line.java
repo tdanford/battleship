@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -30,6 +31,10 @@ import com.google.common.base.Preconditions;
  * Axis-aligned line on the grid
  */
 public class Line implements Comparable<Line>, Serializable {
+
+  public static Stream<Line> enumerateLines(final int length) {
+    return Spot.spots().flatMap(start -> enumerateLines(start, length));
+  }
 
   public static Stream<Line> enumerateLines(final Spot start, final int length) {
     return Spot.spots()

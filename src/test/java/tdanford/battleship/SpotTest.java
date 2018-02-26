@@ -24,6 +24,11 @@ import org.junit.Test;
 public class SpotTest {
 
   @Test
+  public void testSpotEnumeration() {
+    assertThat(Spot.spots()).hasSize(100);
+  }
+
+  @Test
   public void testGetters() {
     assertThat(new Spot("A1").getCol()).isEqualTo(1);
     assertThat(new Spot("A1").getRow()).isEqualTo(0);

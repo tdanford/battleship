@@ -27,6 +27,12 @@ public class LineTest {
   }
 
   @Test
+  public void testLineEnumeration() {
+    assertThat(Line.enumerateLines(1)).hasSize(100);
+    assertThat(Line.enumerateLines(5)).hasSize(120);
+  }
+
+  @Test
   public void testStartFinishOrdering() {
     assertThat(line("A1", "A5").getStart()).isEqualTo(new Spot("A1"));
     assertThat(line("A1", "C1").getStart()).isEqualTo(new Spot("A1"));
