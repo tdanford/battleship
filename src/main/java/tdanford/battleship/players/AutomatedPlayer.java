@@ -14,20 +14,19 @@
  *    limitations under the License.
  */
 
-package tdanford.battleship.games;
+package tdanford.battleship.players;
 
 import java.util.Collection;
-import java.util.Random;
 
-import tdanford.battleship.Board;
 import tdanford.battleship.PlacedShip;
-import tdanford.battleship.Spot;
+import tdanford.battleship.games.BattleshipAction;
+import tdanford.battleship.games.BattleshipResponse;
+import tdanford.battleship.games.BattleshipState;
+import tdanford.games.Player;
 
-public class DumbComputerPlayer extends AutomatedPlayer {
+public abstract class AutomatedPlayer extends ManagedStatePlayer {
 
-  private static Random rand = new Random();
-
-  public DumbComputerPlayer(
+  public AutomatedPlayer(
     final String name,
     final Collection<PlacedShip> ships,
     final boolean verbose
@@ -36,23 +35,13 @@ public class DumbComputerPlayer extends AutomatedPlayer {
   }
 
   @Override
-  public BattleshipAction chooseAction(final BattleshipState publicKnowledge) {
-    final BattleshipState.PlayerState currentState = publicKnowledge.getPlayerState(this);
-
-    final Board board = currentState.shots;
-
-    Spot shot = null;
-
-    do {
-      shot = randomShot(board);
-    } while(!board.isNoShot(shot));
-
-    verboseSay("SHOT -> %s", shot);
-
-    return new BattleshipAction(this, shot);
-  }
-
-  private Spot randomShot(final Board board) {
-    return new Spot(rand.nextInt(10), 1 + rand.nextInt(10));
+  public void registerResponse(
+    final Player<BattleshipAction, BattleshipState, BattleshipResponse> player,
+    final BattleshipState publicKnowledge,
+    final BattleshipAction act,
+    final BattleshipResponse response
+  ) {
+    // don't need to register a response, since the result of our action will
+    // arrive in the next BattleshipState value we see in chooseAction
   }
 }

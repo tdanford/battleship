@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package tdanford.battleship.games;
+package tdanford.battleship.players;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,6 +23,10 @@ import java.util.Set;
 
 import tdanford.battleship.PlacedShip;
 import tdanford.battleship.Spot;
+import tdanford.battleship.games.BattleshipAction;
+import tdanford.battleship.games.BattleshipPlayer;
+import tdanford.battleship.games.BattleshipResponse;
+import tdanford.battleship.games.BattleshipState;
 
 public abstract class ManagedStatePlayer extends BattleshipPlayer {
 

@@ -25,8 +25,8 @@ import com.google.common.base.Preconditions;
 
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
-import tdanford.battleship.games.DumbComputerPlayer;
-import tdanford.battleship.games.InteractivePlayer;
+import tdanford.battleship.players.DumbComputerPlayer;
+import tdanford.battleship.players.InteractivePlayer;
 
 public class Main {
 

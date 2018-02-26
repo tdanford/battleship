@@ -41,7 +41,10 @@ public abstract class BattleshipPlayer
     return Objects.equals(name, p.name);
   }
 
-  abstract BattleshipResponse findResponse(BattleshipState initialState, BattleshipAction action);
+  abstract public BattleshipResponse findResponse(
+    BattleshipState initialState,
+    BattleshipAction action
+  );
 }
 
 
