@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
 
@@ -29,6 +30,14 @@ import com.google.common.base.Preconditions;
  * Axis-aligned line on the grid
  */
 public class Line implements Comparable<Line>, Serializable {
+
+  public static Stream<Line> enumerateLines(final Spot start, final int length) {
+    return Spot.spots()
+      .filter(f -> f.compareTo(start) >= 0)
+      .filter(start::isAligned)
+      .filter(f -> f.axisDistance(start) == length)
+      .map(finish -> new Line(start, finish));
+  }
 
   private static final long serialVersionUID = 1L;
 

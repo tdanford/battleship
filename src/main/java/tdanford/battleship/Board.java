@@ -18,9 +18,14 @@ package tdanford.battleship;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.TreeSet;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -61,7 +66,6 @@ public class Board {
 
   public String printBoard() {
     final StringBuilder sb = new StringBuilder();
-
 
     sb.append("           1\n");
     sb.append("  1234567890\n");

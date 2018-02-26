@@ -54,6 +54,8 @@ public class Main {
     System.out.println(String.format("%s is the winner", winner.get().getName()));
   }
 
+  private static RandomUtils rand = new RandomUtils();
+
   private static Collection<PlacedShip> randomShipPlacement() {
     ArrayList<PlacedShip> ships = new ArrayList<>();
 
@@ -65,46 +67,11 @@ public class Main {
     return ships;
   }
 
-  private static Random rand = new Random();
-
   private static PlacedShip randomPlacedShip(
     final Ship ship,
     final Collection<PlacedShip> previous
   ) {
-    PlacedShip placed;
-    do {
-      placed = new PlacedShip(ship, randomLine(ship.getSize()));
-    } while(overlapsShip(placed, previous));
-
-    return placed;
-  }
-
-  private static boolean overlapsShip(final PlacedShip ship, final Collection<PlacedShip> placed) {
-    for (final PlacedShip ps : placed) {
-      if (ps.getLocation().intersects(ship.getLocation())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static Line randomLine(final int length) {
-    Preconditions.checkArgument(length > 0);
-
-    boolean vertical = rand.nextBoolean();
-
-    int c1 = vertical ? rand.nextInt(10) + 1 : rand.nextInt(10 - length) + 1;
-    int r1 = vertical ? rand.nextInt(10 - length) : rand.nextInt(10);
-
-    int c2 = vertical ? c1 : c1 + length - 1;
-    int r2 = vertical ? r1 + length - 1 : r1;
-
-    final Line line = new Line(new Spot(r1, c1), new Spot(r2, c2));
-
-    Preconditions.checkState(line.length() == length,
-      String.format("Line %s length %d must equal " +
-      "parameter length %d", line, line.length(), length));
-
-    return line;
+    Preconditions.checkArgument(previous != null);
+    return rand.randomPlacedShip(ship, placed -> placed != null && !placed.overlaps(previous));
   }
 }

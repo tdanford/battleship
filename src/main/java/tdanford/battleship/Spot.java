@@ -18,10 +18,15 @@ package tdanford.battleship;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.factory.Lists;
@@ -109,4 +114,52 @@ public class Spot implements Comparable<Spot> {
       return Integer.compare(col, s.col);
     }
   }
+
+  public boolean isAligned(final Spot spot) {
+    return (spot.getRow() == row || spot.getCol() == col);
+  }
+
+  public int axisDistance(final Spot spot) {
+    Preconditions.checkArgument(spot != null);
+    Preconditions.checkArgument(isAligned(spot));
+
+    return Math.max(Math.abs(spot.getRow() - row), Math.abs(spot.getCol() - col)) + 1;
+  }
+
+  /**
+   * Creates a Stream of <i>all</i> {@link Spot}s
+   *
+   * @return A {@link Stream} of {@link Spot}, 100 in the default board size.
+   */
+  public static Stream<Spot> spots() {
+    return StreamSupport.stream(
+      Spliterators.spliteratorUnknownSize(new SpotIterator(), Spliterator.ORDERED),
+      false
+    );
+  }
+
+  private static class SpotIterator implements Iterator<Spot> {
+
+    private int row = 0;
+    private int col = 1;
+
+    @Override
+    public boolean hasNext() {
+      return row < 9 || col < 10;
+    }
+
+    @Override
+    public Spot next() {
+      final Spot spot = new Spot(row, col);
+
+      col += 1;
+      if (col > 10) {
+        col = 1;
+        row += 1;
+      }
+
+      return spot;
+    }
+  }
+
 }

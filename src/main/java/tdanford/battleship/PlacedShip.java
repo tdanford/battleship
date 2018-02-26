@@ -42,6 +42,15 @@ public class PlacedShip {
     this.hitSpots = new ArrayList<>();
   }
 
+  public boolean overlaps(final Iterable<PlacedShip> ships) {
+    for (final PlacedShip ship : ships) {
+      if (location.intersects(ship.getLocation())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public Ship getShip() { return ship; }
 
   public Line getLocation() { return location; }
