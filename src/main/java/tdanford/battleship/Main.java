@@ -30,13 +30,23 @@ public class Main {
     final boolean computersOnly = args.length > 0 && args[0].equals("computer");
     final RandomUtils rand = new RandomUtils();
 
+    final ShipArrangement[] arrangements = new ShipArrangement[] {
+      rand.randomShipPlacement(),
+      rand.randomShipPlacement()
+    };
+
     final BattleshipPlayer player1 =
       computersOnly
-        ? new DumbComputerPlayer("computer1", rand.randomShipPlacement(), true)
+        ? new DumbComputerPlayer("computer1", arrangements[0], true)
         : new InteractivePlayer(new StandardTerminal());
 
     final BattleshipPlayer player2 =
-      new DumbComputerPlayer("computer2", rand.randomShipPlacement(), computersOnly);
+      new DumbComputerPlayer("computer2", arrangements[1], computersOnly);
+
+    if (computersOnly) {
+      System.out.println(String.format("%s: %s", player1.getName(), arrangements[0]));
+      System.out.println(String.format("%s: %s", player2.getName(), arrangements[1]));
+    }
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
