@@ -19,6 +19,7 @@ package tdanford.battleship.players;
 import java.util.Collection;
 
 import tdanford.battleship.PlacedShip;
+import tdanford.battleship.ShipArrangement;
 import tdanford.battleship.games.BattleshipAction;
 import tdanford.battleship.games.BattleshipResponse;
 import tdanford.battleship.games.BattleshipState;
@@ -28,7 +29,7 @@ public abstract class AutomatedPlayer extends ManagedStatePlayer {
 
   public AutomatedPlayer(
     final String name,
-    final Collection<PlacedShip> ships,
+    final ShipArrangement ships,
     final boolean verbose
   ) {
     super(name, ships, verbose);

@@ -21,6 +21,7 @@ import java.util.Random;
 
 import tdanford.battleship.Board;
 import tdanford.battleship.PlacedShip;
+import tdanford.battleship.ShipArrangement;
 import tdanford.battleship.Spot;
 import tdanford.battleship.games.BattleshipAction;
 import tdanford.battleship.games.BattleshipState;
@@ -31,7 +32,7 @@ public class DumbComputerPlayer extends AutomatedPlayer {
 
   public DumbComputerPlayer(
     final String name,
-    final Collection<PlacedShip> ships,
+    final ShipArrangement ships,
     final boolean verbose
   ) {
     super(name, ships, verbose);

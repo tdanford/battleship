@@ -16,12 +16,7 @@
 
 package tdanford.battleship;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.Random;
-
-import com.google.common.base.Preconditions;
 
 import tdanford.battleship.games.BattleshipLoop;
 import tdanford.battleship.games.BattleshipPlayer;
@@ -33,14 +28,15 @@ public class Main {
   public static void main(String[] args) {
 
     final boolean computersOnly = args.length > 0 && args[0].equals("computer");
+    final RandomUtils rand = new RandomUtils();
 
     final BattleshipPlayer player1 =
       computersOnly
-        ? new DumbComputerPlayer("computer1", randomShipPlacement(), true)
+        ? new DumbComputerPlayer("computer1", rand.randomShipPlacement(), true)
         : new InteractivePlayer(new StandardTerminal());
 
     final BattleshipPlayer player2 =
-      new DumbComputerPlayer("computer2", randomShipPlacement(), computersOnly);
+      new DumbComputerPlayer("computer2", rand.randomShipPlacement(), computersOnly);
     
     final BattleshipLoop loop = new BattleshipLoop(player1, player2);
 
@@ -54,24 +50,5 @@ public class Main {
     System.out.println(String.format("%s is the winner", winner.get().getName()));
   }
 
-  private static RandomUtils rand = new RandomUtils();
 
-  private static Collection<PlacedShip> randomShipPlacement() {
-    ArrayList<PlacedShip> ships = new ArrayList<>();
-
-    for (Ship s : Ship.values()) {
-      final PlacedShip placed = randomPlacedShip(s, ships);
-      ships.add(placed);
-    }
-
-    return ships;
-  }
-
-  private static PlacedShip randomPlacedShip(
-    final Ship ship,
-    final Collection<PlacedShip> previous
-  ) {
-    Preconditions.checkArgument(previous != null);
-    return rand.randomPlacedShip(ship, placed -> placed != null && !placed.overlaps(previous));
-  }
 }

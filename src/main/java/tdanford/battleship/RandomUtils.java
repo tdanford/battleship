@@ -16,7 +16,7 @@
 
 package tdanford.battleship;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.google.common.base.Preconditions;
@@ -36,6 +36,17 @@ public class RandomUtils {
 
   private Spot randomSpot() {
     return new Spot(rand.nextInt(10), 1 + rand.nextInt(10));
+  }
+
+  public ShipArrangement randomShipPlacement() {
+    ArrayList<PlacedShip> ships = new ArrayList<>();
+
+    for (Ship ship : Ship.values()) {
+      final PlacedShip placed = randomPlacedShip(ship, p -> p != null && !p.overlaps(ships));
+      ships.add(placed);
+    }
+
+    return new ShipArrangement(ships);
   }
 
   public Line randomLine(final int length) {

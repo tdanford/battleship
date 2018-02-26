@@ -16,12 +16,10 @@
 
 package tdanford.battleship.players;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import tdanford.battleship.PlacedShip;
+import tdanford.battleship.ShipArrangement;
 import tdanford.battleship.Spot;
 import tdanford.battleship.games.BattleshipAction;
 import tdanford.battleship.games.BattleshipPlayer;
@@ -30,16 +28,16 @@ import tdanford.battleship.games.BattleshipState;
 
 public abstract class ManagedStatePlayer extends BattleshipPlayer {
 
-  private final Set<PlacedShip> ships;
+  private final ShipArrangement ships;
   private boolean verbose;
 
   public ManagedStatePlayer(
     final String name,
-    final Collection<PlacedShip> ships,
+    final ShipArrangement ships,
     final boolean verbose
   ) {
     super(name);
-    this.ships = new HashSet<>(ships);
+    this.ships = ships;
     this.verbose = verbose;
   }
 
@@ -48,7 +46,7 @@ public abstract class ManagedStatePlayer extends BattleshipPlayer {
   public boolean isVerbose() { return verbose; }
 
   private Optional<PlacedShip> findHitShip(final Spot spot) {
-    for (final PlacedShip ship : ships) {
+    for (final PlacedShip ship : ships.getShips()) {
       if (ship.getLocation().contains(spot)) {
         return Optional.of(ship);
       }
