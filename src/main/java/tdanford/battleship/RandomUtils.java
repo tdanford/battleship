@@ -18,9 +18,11 @@ package tdanford.battleship;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 
 public class RandomUtils {
 
@@ -36,6 +38,21 @@ public class RandomUtils {
 
   private Spot randomSpot() {
     return new Spot(rand.nextInt(10), 1 + rand.nextInt(10));
+  }
+
+  public Stream<ShipArrangement> randomShipArrangements(
+    final long n,
+    final Predicate<ShipArrangement> predicate
+  ) {
+    return LongStream.range(0, n).mapToObj(i -> randomShipArrangement(predicate));
+  }
+
+  public ShipArrangement randomShipArrangement(final Predicate<ShipArrangement> predicate) {
+    ShipArrangement arr;
+    do {
+      arr = randomShipPlacement();
+    } while(!predicate.test(arr));
+    return arr;
   }
 
   public ShipArrangement randomShipPlacement() {
@@ -76,7 +93,7 @@ public class RandomUtils {
     PlacedShip placed;
     do {
       placed = new PlacedShip(ship, randomLine(ship.getSize()));
-    } while (!predicate.apply(placed));
+    } while (!predicate.test(placed));
 
     return placed;
   }

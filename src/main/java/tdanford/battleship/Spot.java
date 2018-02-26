@@ -134,7 +134,7 @@ public class Spot implements Comparable<Spot> {
    */
   public static Stream<Spot> spots() {
     return StreamSupport.stream(
-      Spliterators.spliteratorUnknownSize(new SpotIterator(), Spliterator.ORDERED),
+      Spliterators.spliterator(new SpotIterator(), 100, 0),
       false
     );
   }
