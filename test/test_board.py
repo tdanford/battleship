@@ -62,3 +62,21 @@ def test_list_spaces():
     b.list_space_coords("C3", Direction.RIGHT, 5) == ["C4", "C5", "C6", "C7"]
 
     b.shoot("C2")
+
+
+def test_board_equality():
+    b1 = Board()
+    b2 = Board()
+    assert b1 == b2
+
+    b2.place_ship(PlacedShip(Ship.BATTLESHIP, b2, "C3", Orientation.HORIZONTAL))
+    assert b1 != b2
+
+    b1.place_ship(PlacedShip(Ship.BATTLESHIP, b1, "C3", Orientation.HORIZONTAL))
+    assert b1 == b2
+
+    b1.shoot("F5")
+    assert b1 != b2
+
+    b2.shoot("F5")
+    assert b1 == b2

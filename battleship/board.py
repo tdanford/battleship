@@ -124,7 +124,10 @@ class Spot:
 
     def __eq__(self, other) -> bool:
         return (
-            isinstance(other, Spot) and self.row == other.row and self.col == other.col
+            isinstance(other, Spot)
+            and self.row == other.row
+            and self.col == other.col
+            and self.is_shot == other.is_shot
         )
 
     def __hash__(self) -> int:
@@ -210,6 +213,13 @@ class Board:
             "spots": [[spot.asdict() for spot in row] for row in self.spots],
             "placed_ships": [ps.asdict() for ps in self.placed_ships],
         }
+
+    def __eq__(self, other) -> bool:
+        return (
+            isinstance(other, Board)
+            and self.spots == other.spots
+            and self.placed_ships == other.placed_ships
+        )
 
     @staticmethod
     def fromdict(d: Dict) -> "Board":
