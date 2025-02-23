@@ -110,6 +110,7 @@ class Game(MessageTarget):
             self.players.get(target_player).deliver_message(message)
 
             # give the first player the feedback on the shot
+            self.states.get(message.source).target_board.shoot(coord)
             self.send(message.source, "shot_feedback", **feedback_payload)
 
             if self.states[target_player].is_alive():
