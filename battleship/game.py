@@ -4,7 +4,10 @@ from .player import *
 from .queues import MessageQueue
 
 import asyncio
+import json
 import logging
+
+from pathlib import Path
 
 
 class GameState(Enum):
@@ -85,6 +88,9 @@ class Game(MessageTarget):
             if self.is_all_setup_complete():
                 self.state = GameState.PLAYING
                 self.switch_turn()
+                for name, s in self.states.items():
+                    p = Path(f"{name}.json")
+                    p.write_text(json.dumps(s.asdict(), indent=2))
         elif message.type == "shot":
             if self.state != GameState.PLAYING:
                 raise ValueError(
