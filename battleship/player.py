@@ -5,6 +5,7 @@ from typing import TypeVar
 
 from .board import *
 from .messages import *
+from .queues import MessageQueue
 
 
 class PlayerState(MessageTarget):
@@ -95,6 +96,9 @@ class Player(PlayerState):
         self.game.deliver_message(
             Message(source=self.name, type=type, payload={**kwargs})
         )
+
+    def queue(self) -> MessageQueue:
+        return MessageQueue(self.name, self)
 
     def deliver_message(self, message: Message):
         PlayerState.deliver_message(self, message)
