@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Dict, List, Tuple
 from dataclasses import dataclass, field
+from typing import Dict, List, Optional, Tuple
 import logging
 import time
 
@@ -29,7 +29,7 @@ class ProxyingMessageTarget(MessageTarget):
 
     _internal: MessageTarget
 
-    def __init__(self, target: MessageTarget):
+    def __init__(self, target: Optional[MessageTarget] = None):
         self._internal = target or NullMessageTarget()
 
     def set_target(self, new_target: MessageTarget):
