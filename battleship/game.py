@@ -151,19 +151,16 @@ class GameEndedException(Exception):
 async def setup_local_game() -> Game:
     logging.basicConfig(level=logging.INFO)
 
-    game_queue = MessageQueue("game", None)
-    p1 = HuntingComputerPlayer("player1", game_queue)
-    p2 = RandomComputerPlayer("player2", game_queue)
-    p1q = MessageQueue("player1", p1)
-    p2q = MessageQueue("player2", p2)
-    game = Game("player1", p1q, "player2", p2q)
-    game_queue._target = game
+    game_target = ProxyingMessageTarget()
+    game_queue = MessageQueue("game", game_target)
+    p2 = HuntingComputerPlayer("player1", game_queue)
+    p1 = RandomComputerPlayer("player2", game_queue)
+    game = Game("player1", p1, "player2", p2)
+    game_target.set_target(game)
 
     try:
         async with asyncio.TaskGroup() as group:
             group.create_task(game_queue.run())
-            group.create_task(p1q.run())
-            group.create_task(p2q.run())
             group.create_task(game.run())
     except* GameEndedException:
         pass
