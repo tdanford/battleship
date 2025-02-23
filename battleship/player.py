@@ -75,7 +75,7 @@ class PlayerState(MessageTarget):
         return self.home_board.has_alive_ships()
 
 
-class Player(PlayerState):
+class Player(PlayerState, ABC):
     """A Player is a PlayerState which is interactive, and is the superclass for either human or computer players.
 
     The `game` field is the refernce to the Game object that is the central point of
@@ -207,6 +207,7 @@ class HuntingComputerPlayer(Player):
         self.remaining_ships = {s: True for s in Ship}
         self.state = HuntingState.SEARCHING
         self.pending = {}
+        self.pending_directions = []
 
     def count_ship_freedoms(self, coord: str, ship: Ship) -> int:
         vr = self.target_board.vertical_room(coord) + 1 - ship.size()
@@ -241,8 +242,18 @@ class HuntingComputerPlayer(Player):
             return next_spot
         else:
             self.logger.log(logging.INFO, f"Pending {self.pending}")
-            while len(self.pending[self.pending_directions[0]]) == 0:
+            while (
+                len(self.pending_directions) > 0
+                and len(self.pending[self.pending_directions[0]]) == 0
+            ):
                 self.pending_directions.pop(0)
+            if len(self.pending_directions) == 0:
+                self.logger.log(
+                    logging.INFO,
+                    f"Ran out of directions to shoot, switching back to searching",
+                )
+                self.state = HuntingState.SEARCHING
+                return self.choose_shot()
             return self.pending[self.pending_directions[0]].pop(0)
 
     def set_outcome(self, outcome):
