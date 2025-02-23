@@ -68,25 +68,39 @@ class PlacedShip:
         return len(self.unshot_spots()) == 0
 
 
+class ShotOutcome(Enum):
+
+    HIT = "hit"
+    MISS = "miss"
+
+
 class Spot:
 
     row: int
     col: int
     ship: Optional[PlacedShip]
-    is_shot: bool
+    shot_outcome: Optional[ShotOutcome]
 
-    def __init__(self, row: int, col: int, is_shot: Optional[bool] = None):
+    def __init__(self, row: int, col: int, shot_outcome: Optional[ShotOutcome] = None):
         self.row = row
         self.col = col
         self.ship = None
-        self.is_shot = is_shot or False
+        self.shot_outcome = shot_outcome
+
+    @property
+    def is_shot(self) -> bool:
+        return self.shot_outcome is not None
 
     def asdict(self) -> Dict:
-        return {"row": self.row, "col": self.col, "is_shot": self.is_shot}
+        d = {"row": self.row, "col": self.col}
+        if self.shot_outcome is not None:
+            d["shot_outcome"] = self.shot_outcome.value
+        return d
 
     @staticmethod
     def fromdict(d: Dict) -> "Spot":
-        return Spot(row=d.get("row"), col=d.get("col"), is_shot=d.get("is_shot"))
+        outcome = ShotOutcome(d.get("shot_outcome")) if "shot_outcome" in d else None
+        return Spot(row=d.get("row"), col=d.get("col"), shot_outcome=outcome)
 
     def count_remaining(self) -> int:
         if self.ship is not None:
@@ -112,8 +126,9 @@ class Spot:
         else:
             return " "
 
-    def shoot(self):
-        self.is_shot = True
+    def shoot(self) -> ShotOutcome:
+        self.shot_outcome = ShotOutcome.HIT if self.ship else ShotOutcome.MISS
+        return self.shot_outcome
 
     @property
     def coord(self) -> str:
@@ -366,8 +381,8 @@ class Board:
     def shoot(self, coord: str) -> Tuple[bool, Optional[PlacedShip]]:
         spot = self[coord]
         first_remaining = spot.count_remaining()
-        hit = spot.ship is not None
-        spot.shoot()
+        outcome = spot.shoot()
+        hit = outcome == ShotOutcome.HIT
         second_remaining = spot.count_remaining()
         if first_remaining > 0 and second_remaining == 0:
             # we've sunk a ship
