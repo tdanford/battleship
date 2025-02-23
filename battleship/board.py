@@ -46,7 +46,7 @@ class PlacedShip:
         }
 
     @staticmethod
-    def fromdict(self, board: "Board", d: Dict) -> "PlacedShip":
+    def fromdict(board: "Board", d: Dict) -> "PlacedShip":
         return PlacedShip(
             ship=Ship(d.get("ship")),
             board=board,
