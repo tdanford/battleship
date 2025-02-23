@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from dataclasses import dataclass
 from typing import Dict, List, Tuple
+from dataclasses import dataclass, field
 import logging
 import time
 
@@ -10,7 +10,7 @@ import time
 class Message:
     source: str
     type: str
-    payload: Dict[str, str]
+    payload: Dict[str, str] = field(default_factory=dict)
 
 
 class MessageTarget(ABC):
