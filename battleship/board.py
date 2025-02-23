@@ -27,6 +27,17 @@ class PlacedShip:
         for l in self.locations:
             l.ship = self
 
+    def __repr__(self) -> str:
+        return f"{self.ship.value} @ {self.start_coord} ({self.orientation.value})"
+
+    def __eq__(self, other) -> bool:
+        return (
+            isinstance(other, PlacedShip)
+            and self.ship == other.ship
+            and self.start_coord == other.start_coord
+            and self.orientation == other.orientation
+        )
+
     def unshot_spots(self) -> List["Spot"]:
         return [loc for loc in self.locations if not loc.is_shot]
 
