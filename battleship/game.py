@@ -18,6 +18,15 @@ class GameState(Enum):
 
 
 class Game(MessageTarget):
+    """A Game object is the master state of a running Battleship game.
+
+    It can see the complete state of both (or, in a multiplayer future, all?) players, and
+    it mediates communication by messages between the players.
+
+    This is built like this to support both local and remote game-play, imperfect information
+    for individual players, and asynchronous interactions between players or between players and the
+    game state itself.
+    """
 
     state: GameState
     turn: int
@@ -55,6 +64,7 @@ class Game(MessageTarget):
         return self.setup[self.names[0]] and self.setup[self.names[1]]
 
     def switch_turn(self):
+        """Flips the `turn` variable to index the next player to play, and sends a `turn` Message to that player"""
         self.turn = 1 - self.turn
         self.print_ship_boards()
         self.send(self.names[self.turn], "turn")
@@ -124,6 +134,10 @@ class Game(MessageTarget):
                 self.send(message.source, "won")
 
     async def run(self):
+        """The central loop of the game, which just checks regularly to see if the game is finished.
+
+        All the actual logic updates happen in the `deliver_message` method.
+        """
         self.deliver_message(Message(source="run", type="setup", payload={}))
         while self.state != GameState.ENDED:
             await asyncio.sleep(0.5)
