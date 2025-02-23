@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "battleship"
+dynamic = ["version"]
+dependencies = [
+    "click", 
+    "rich",
+    "textual"
+]
+requires-python = ">= 3.12"
+
+[project.scripts]
+bship = "battleship.cli:main"
