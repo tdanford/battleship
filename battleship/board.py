@@ -38,6 +38,22 @@ class PlacedShip:
             and self.orientation == other.orientation
         )
 
+    def asdict(self) -> Dict:
+        return {
+            "ship": self.ship.value,
+            "start_coord": self.start_coord,
+            "orientation": self.orientation.value,
+        }
+
+    @staticmethod
+    def fromdict(self, board: "Board", d: Dict) -> "PlacedShip":
+        return PlacedShip(
+            ship=Ship(d.get("ship")),
+            board=board,
+            start=d.get("start_coord"),
+            orientation=Orientation(d.get("orientation")),
+        )
+
     def unshot_spots(self) -> List["Spot"]:
         return [loc for loc in self.locations if not loc.is_shot]
 
@@ -59,11 +75,18 @@ class Spot:
     ship: Optional[PlacedShip]
     is_shot: bool
 
-    def __init__(self, row: int, col: int):
+    def __init__(self, row: int, col: int, is_shot: Optional[bool] = None):
         self.row = row
         self.col = col
         self.ship = None
-        self.is_shot = False
+        self.is_shot = is_shot or False
+
+    def asdict(self) -> Dict:
+        return {"row": self.row, "col": self.col, "is_shot": self.is_shot}
+
+    @staticmethod
+    def fromdict(d: Dict) -> "Spot":
+        return Spot(row=d.get("row"), col=d.get("col"), is_shot=d.get("is_shot"))
 
     def count_remaining(self) -> int:
         if self.ship is not None:
@@ -174,9 +197,29 @@ class Board:
     spots: List[List[Spot]]
     placed_ships: List[PlacedShip]
 
-    def __init__(self):
-        self.spots = [[Spot(i, j) for j in range(COLS)] for i in range(ROWS)]
-        self.placed_ships = []
+    def __init__(
+        self,
+        spots: Optional[List[List[Spot]]] = None,
+        placed_ships: Optional[List[PlacedShip]] = None,
+    ):
+        self.spots = spots or [[Spot(i, j) for j in range(COLS)] for i in range(ROWS)]
+        self.placed_ships = placed_ships or []
+
+    def asdict(self) -> Dict:
+        return {
+            "spots": [[spot.asdict() for spot in row] for row in self.spots],
+            "placed_ships": [ps.asdict() for ps in self.placed_ships],
+        }
+
+    @staticmethod
+    def fromdict(d: Dict) -> "Board":
+        b = Board(
+            spots=[[Spot.fromdict(s) for s in row] for row in d.get("spots")],
+        )
+        placed_ships = [PlacedShip.fromdict(b, psd) for psd in d.get("placed_ships")]
+        for s in placed_ships:
+            b.place_ship(s)
+        return b
 
     def shot_row(self, row: int) -> str:
         cs = [s.shot_char() for s in self.spots[row]]

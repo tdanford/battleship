@@ -25,11 +25,31 @@ class PlayerState(MessageTarget):
     target_board: Board
     logger: logging.Logger
 
-    def __init__(self, name: str):
+    def __init__(
+        self,
+        name: str,
+        home_board: Optional[Board] = None,
+        target_board: Optional[Board] = None,
+    ):
         self.name = name
-        self.home_board = Board()
-        self.target_board = Board()
+        self.home_board = home_board or Board()
+        self.target_board = target_board or Board()
         self.logger = logging.getLogger(self.name)
+
+    def asdict(self) -> Dict[str, any]:
+        return {
+            "name": self.name,
+            "home_board": self.home_board.asdict(),
+            "target_board": self.target_board.asdict(),
+        }
+
+    @staticmethod
+    def fromdict(d: Dict) -> "PlayerState":
+        return PlayerState(
+            name=d.get("name"),
+            home_board=Board.fromdict(d.get("home_board")),
+            target_board=Board.fromdict(d.get("target_board")),
+        )
 
     def deliver_message(self, message):
         if message.type == "shot":
