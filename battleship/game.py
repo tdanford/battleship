@@ -53,12 +53,13 @@ class Game(MessageTarget):
 
     def switch_turn(self):
         self.turn = 1 - self.turn
+        self.print_ship_boards()
         self.send(self.names[self.turn], "turn")
 
     def print_ship_boards(self):
         for name, state in self.states.items():
             print(name)
-            print(state.home_board.render_ships())
+            print(state.home_board.render_both_boards())
 
     def deliver_message(self, message):
         if message.type == "setup":
@@ -82,7 +83,6 @@ class Game(MessageTarget):
                 )
             self.setup[message.source] = True
             if self.is_all_setup_complete():
-                self.print_ship_boards()
                 self.state = GameState.PLAYING
                 self.switch_turn()
         elif message.type == "shot":

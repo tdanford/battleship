@@ -8,6 +8,17 @@ from .messages import *
 
 
 class PlayerState(MessageTarget):
+    """PlayerState is the basic data structure that tracks the game state of a single player.
+
+    Besides a display name for the player, it includes a `home_board` and a `target_board`,
+    which are roughly equivalent to the lower and upper peg boards in a single clamshell
+    from the original table-top game.
+
+    `home_board` will hold the locations of the players ships (as a series of PlacedShip objects)
+
+    `target_board` will hold the locations at which the player has previously shot, and
+    which Spots on that board are hits / misses.
+    """
 
     name: str
     home_board: Board
@@ -34,6 +45,13 @@ class PlayerState(MessageTarget):
 
 
 class Player(PlayerState):
+    """A Player is a PlayerState which is interactive, and is the superclass for either human or computer players.
+
+    The `game` field is the refernce to the Game object that is the central point of
+    communication for a running game of Battleship.  (This is typed as a `MessageTarget`
+    because it might be a proxy to the `Game` object, if the latter is stored somewhere
+    outside this Python interpreter, e.g. a remote game)
+    """
 
     game: MessageTarget
     outcome: str
@@ -91,6 +109,7 @@ class Player(PlayerState):
 
 
 class RandomComputerPlayer(Player):
+    """RandomComputerPlayer is a computer player that both sets up its ships, and shoots, completely randomly"""
 
     def __init__(self, name: str, game: MessageTarget):
         super().__init__(name, game)

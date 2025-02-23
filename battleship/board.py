@@ -149,8 +149,12 @@ def parse_coord(coord: str) -> Tuple[int, int]:
     return (row, col)
 
 
+def format_row(row: int) -> str:
+    return chr(ord("A") + row)
+
+
 def format_coord(row: int, col: int) -> str:
-    row_str = chr(ord("A") + row)
+    row_str = format_row(row)
     col_str = f"{col + 1}"
     return f"{row_str}{col_str}"
 
@@ -210,16 +214,43 @@ class Board:
         cs = [s.ship_char() for s in self.spots[row]]
         return "".join(cs)
 
+    def render_both_boards(self) -> str:
+        shots = self.render_shots()
+        ships = self.render_ships()
+
+        shot_lines = shots.split("\n")
+        ship_lines = ships.split("\n")
+
+        lines = [shot_lines[i] + "  " + ship_lines[i] for i in range(len(shot_lines))]
+        return "\n".join(lines)
+
     def render_shots(self) -> str:
         bar = "".join(["-" for i in range(COLS)])
+        col_ids = "".join([str((i + 1) % 10) for i in range(COLS)])
+        sep = f" +{bar}+"
+        top = f"  {col_ids}"
         board_lines = [self.shot_row(i) for i in range(ROWS)]
-        lines = [f"+{bar}+", *[f"|{line}|" for line in board_lines], f"+{bar}+"]
+        lines = [
+            top,
+            sep,
+            *[f"{format_row(i)}|{board_lines[i]}|" for i in range(len(board_lines))],
+            sep,
+        ]
         return "\n".join(lines)
 
     def render_ships(self) -> str:
         bar = "".join(["-" for i in range(COLS)])
+        col_ids = "".join([str((i + 1) % 10) for i in range(COLS)])
+        sep = f" +{bar}+"
+        top = f"  {col_ids}"
         board_lines = [self.ship_row(i) for i in range(ROWS)]
-        lines = [f"+{bar}+", *[f"|{line}|" for line in board_lines], f"+{bar}+"]
+
+        lines = [
+            top,
+            sep,
+            *[f"{format_row(i)}|{board_lines[i]}|" for i in range(len(board_lines))],
+            sep,
+        ]
         return "\n".join(lines)
 
     def vertical_room(self, coord: str) -> int:
