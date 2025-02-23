@@ -253,7 +253,7 @@ class Board:
         bar = "".join(["-" for i in range(COLS)])
         col_ids = "".join([str((i + 1) % 10) for i in range(COLS)])
         sep = f" +{bar}+"
-        top = f"  {col_ids}"
+        top = f"  {col_ids} "
         board_lines = [self.shot_row(i) for i in range(ROWS)]
         lines = [
             top,
@@ -267,7 +267,7 @@ class Board:
         bar = "".join(["-" for i in range(COLS)])
         col_ids = "".join([str((i + 1) % 10) for i in range(COLS)])
         sep = f" +{bar}+"
-        top = f"  {col_ids}"
+        top = f"  {col_ids} "
         board_lines = [self.ship_row(i) for i in range(ROWS)]
 
         lines = [
