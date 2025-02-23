@@ -47,8 +47,14 @@ class RecordingMessageTarget(ProxyingMessageTarget):
         super().__init__(target)
         self._messages = []
 
-    def all_messages(self) -> List[Tuple[float, Message]]:
+    def all_timed_messages(self) -> List[Tuple[float, Message]]:
         return list(self._messages)
+
+    def all_messages(self) -> List[Message]:
+        return [x[1] for x in self._messages]
+
+    def last_message(self) -> Optional[Message]:
+        return self._messages[-1][1] if len(self._messages) > 0 else None
 
     def deliver_message(self, message):
         self._messages.append((time.time(), message))
