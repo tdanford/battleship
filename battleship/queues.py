@@ -29,7 +29,6 @@ class MessageQueue(MessageTarget):
     async def process(self) -> int:
         if len(self._messages) > 0:
             msg = self._messages.pop(0)
-            self._logger.log(logging.DEBUG, f"{str(msg)}")
             self._target.deliver_message(msg)
             return 1
         else:
