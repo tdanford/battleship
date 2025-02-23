@@ -59,7 +59,7 @@ class Game(MessageTarget):
     def print_ship_boards(self):
         for name, state in self.states.items():
             print(name)
-            print(state.home_board.render_both_boards())
+            print(state.render_both_boards())
 
     def deliver_message(self, message):
         if message.type == "setup":

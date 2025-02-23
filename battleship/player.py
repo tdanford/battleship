@@ -36,6 +36,16 @@ class PlayerState(MessageTarget):
         self.target_board = target_board or Board()
         self.logger = logging.getLogger(self.name)
 
+    def render_both_boards(self) -> str:
+        shots = self.target_board.render_shots()
+        ships = self.home_board.render_ships()
+
+        shot_lines = shots.split("\n")
+        ship_lines = ships.split("\n")
+
+        lines = [shot_lines[i] + "  " + ship_lines[i] for i in range(len(shot_lines))]
+        return "\n".join(lines)
+
     def asdict(self) -> Dict[str, any]:
         return {
             "name": self.name,

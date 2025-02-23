@@ -15,7 +15,7 @@ def show_state(state_file):
     p = Path(state_file)
     d = json.loads(p.read_text())
     ps = PlayerState.fromdict(d)
-    click.echo(ps.render_boards())
+    click.echo(ps.render_both_boards())
 
 
 if __name__ == "__main__":
