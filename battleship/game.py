@@ -17,7 +17,7 @@ class GameState(Enum):
     ENDED = "ended"
 
 
-class Game(MessageTarget):
+class LocalGame(MessageTarget):
     """A Game object is the master state of a running Battleship game.
 
     It can see the complete state of both (or, in a multiplayer future, all?) players, and
@@ -148,14 +148,14 @@ class GameEndedException(Exception):
     """Raise this to end the game from a queue runner or the game runner"""
 
 
-async def setup_local_game() -> Game:
+async def setup_local_game() -> LocalGame:
     logging.basicConfig(level=logging.INFO)
 
     game_target = ProxyingMessageTarget()
     game_queue = MessageQueue("game", game_target)
     p2 = HuntingComputerPlayer("player1", game_queue)
     p1 = RandomComputerPlayer("player2", game_queue)
-    game = Game("player1", p1, "player2", p2)
+    game = LocalGame("player1", p1, "player2", p2)
     game_target.set_target(game)
 
     try:

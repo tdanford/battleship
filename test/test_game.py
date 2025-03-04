@@ -1,12 +1,12 @@
 from typing import Optional
 from battleship.messages import *
-from battleship.game import Game, GameState
+from battleship.game import LocalGame, GameState
 
 
 def test_game_setup_completed_state():
     p1 = RecordingMessageTarget(NullMessageTarget())
     p2 = RecordingMessageTarget(NullMessageTarget())
-    g = Game("p1", p1, "p2", p2)
+    g = LocalGame("p1", p1, "p2", p2)
     g.deliver_message(Message("game", "setup"))
 
     assert g.state == GameState.SETUP
