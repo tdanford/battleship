@@ -172,7 +172,7 @@ class RandomComputerPlayer(Player):
     def choose_random_shot(self) -> str:
         spots = self.target_board.unshot_spots()
         random_spot = random.choice(spots)
-        return random_spot.coord
+        return random_spot
 
 
 class HuntingState(Enum):
@@ -231,9 +231,7 @@ class HuntingComputerPlayer(Player):
 
     def choose_shot(self):
         if self.state == HuntingState.SEARCHING:
-            spots = [
-                format_coord(s.row, s.col) for s in self.target_board.unshot_spots()
-            ]
+            spots = self.target_board.unshot_spots()
             self.logger.log(logging.INFO, f"Spots: {spots}")
             freedoms = [self.count_freedoms(c) for c in spots]
             self.logger.log(logging.INFO, f"Freedoms: {freedoms}")
@@ -305,4 +303,4 @@ class HuntingComputerPlayer(Player):
     def choose_random_shot(self) -> str:
         spots = self.target_board.unshot_spots()
         random_spot = random.choice(spots)
-        return random_spot.coord
+        return random_spot

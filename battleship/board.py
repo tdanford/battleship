@@ -54,8 +54,8 @@ class PlacedShip:
             orientation=Orientation(d.get("orientation")),
         )
 
-    def unshot_spots(self) -> List["Spot"]:
-        return [loc for loc in self.locations if not loc.is_shot]
+    def unshot_spots(self) -> List[str]:
+        return [loc.coord for loc in self.locations if not loc.is_shot]
 
     def overlaps(self, placed: "PlacedShip") -> bool:
         for spot in self.locations:
@@ -375,8 +375,8 @@ class Board:
                 if predicate(self.spots[i][j]):
                     yield self.spots[i][j]
 
-    def unshot_spots(self) -> List[Spot]:
-        return list(self.search_spots(lambda sp: not sp.is_shot))
+    def unshot_spots(self) -> List[str]:
+        return [spot.coord for row in self.spots for spot in row if not spot.is_shot]
 
     def shoot(self, coord: str) -> Tuple[bool, Optional[PlacedShip]]:
         spot = self[coord]
