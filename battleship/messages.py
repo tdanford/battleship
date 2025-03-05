@@ -53,8 +53,11 @@ class RecordingMessageTarget(ProxyingMessageTarget):
     def all_messages(self) -> List[Message]:
         return [x[1] for x in self._messages]
 
-    def last_message(self) -> Optional[Message]:
-        return self._messages[-1][1] if len(self._messages) > 0 else None
+    def last_message(self, offset: int = -1) -> Optional[Message]:
+        try: 
+            return self._messages[offset][1] 
+        except IndexError: 
+            return None
 
     def deliver_message(self, message):
         self._messages.append((time.time(), message))
