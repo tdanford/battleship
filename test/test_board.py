@@ -80,3 +80,38 @@ def test_board_equality():
 
     b2.shoot("F5")
     assert b1 == b2
+
+
+def test_board_unshot_spots(): 
+
+    b1 = Board()
+
+    assert "C1" in b1.unshot_spots()
+    assert "C2" in b1.unshot_spots()
+    assert "C3" in b1.unshot_spots()
+
+    b1.shoot("C3") 
+
+    assert "C1" in b1.unshot_spots()
+    assert "C2" in b1.unshot_spots()
+    assert "C3" not in b1.unshot_spots()
+
+    b1.shoot("C2", ShotOutcome.MISS)
+
+    assert "C1" in b1.unshot_spots()
+    assert "C2" not in b1.unshot_spots()
+    assert "C3" not in b1.unshot_spots()
+
+    b1.shoot("C1", ShotOutcome.HIT)
+
+    assert "C1" not in b1.unshot_spots()
+    assert "C2" not in b1.unshot_spots()
+    assert "C3" not in b1.unshot_spots()
+
+    b1.place_ship(PlacedShip(Ship.BATTLESHIP, b1, "D1", Orientation.HORIZONTAL))
+
+    assert "D1" in b1.unshot_spots()
+
+    b1.shoot("D1")
+    
+    assert "D1" not in b1.unshot_spots()
