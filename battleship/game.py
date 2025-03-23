@@ -109,15 +109,15 @@ class Game(MessageTarget, ABC):
 
             target_player = self.other_player(message.source)
 
-            # update internal state of the target player
+            # first transmit move to other player
+            self.send_message(target_player, message)
+
+            # then update internal state of the target player
             coord = message.payload.get("coord")
             (hit, sunk_ship) = self.shoot_at_board(target_player, coord) 
             feedback_payload = {"coord": coord, "outcome": "hit" if hit else "miss"}
             if sunk_ship is not None:
                 feedback_payload["sunk_ship"] = sunk_ship.ship.value
-
-            # transmit move to other player
-            self.send_message(target_player, message)
 
             # give the first player the feedback on the shot
             self.send(message.source, "shot_feedback", **feedback_payload)

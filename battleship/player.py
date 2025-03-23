@@ -156,7 +156,7 @@ class RandomComputerPlayer(Player):
             Message(source=self.name, type="setup_complete", payload={})
         )
 
-    def choose_shot(self):
+    def choose_shot(self) -> str:
         return self.choose_random_shot()
 
     def set_outcome(self, outcome):
