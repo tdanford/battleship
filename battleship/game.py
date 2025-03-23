@@ -51,6 +51,14 @@ class Game(MessageTarget, ABC):
         ...
     
     @abstractmethod
+    def player_names(self) -> List[str]: 
+        ...
+
+    @abstractmethod 
+    def current_player(self) -> str: 
+        ...
+    
+    @abstractmethod
     def other_player(self, player: str) -> str:
         ...
     
@@ -73,7 +81,7 @@ class Game(MessageTarget, ABC):
     def deliver_message(self, message):
         if message.type == "setup":
             self.state = GameState.SETUP
-            for p in self.names:
+            for p in self.player_names():
                 self.send(p, "setup")
         elif message.type == "ship_placed":
             if self.state != GameState.SETUP:
@@ -141,6 +149,12 @@ class LocalGame(Game):
         self.states = {name1: PlayerState(name1), name2: PlayerState(name2)}
         self.players = {name1: player1, name2: player2}
         self.setup = {name1: False, name2: False}
+
+    def player_names(self) -> List[str]: 
+        return list(self.names) 
+    
+    def current_player(self) -> str: 
+        return self.names[self.turn]
 
     def other_player(self, player: str) -> str:
         if player == self.names[0]:
