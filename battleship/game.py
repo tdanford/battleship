@@ -213,7 +213,7 @@ class LocalGame(Game):
         """
         self.deliver_message(Message(source="run", type="setup", payload={}))
         while self.state != GameState.ENDED:
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.25)
         raise GameEndedException()
 
 
