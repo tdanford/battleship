@@ -120,6 +120,8 @@ class Player(PlayerState, ABC):
         elif message.type == "shot_feedback":
             coord = message.payload.get("coord")
             outcome = message.payload.get("outcome")
+            shot_outcome = ShotOutcome(outcome) 
+            self.target_board.shoot(coord, shot_outcome)
             sunk_ship = message.payload.get("sunk_ship")
             self.shot_outcome(coord, outcome, sunk_ship)
         elif message.type == "won":

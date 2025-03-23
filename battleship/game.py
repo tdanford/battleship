@@ -197,7 +197,8 @@ class LocalGame(Game):
 
     def shoot_at_board(self, player: str, coord: str) -> Tuple[bool, Optional[PlacedShip]]:
         (hit, pship) = self.states.get(player).home_board.shoot(coord)
-        self.states.get(self.other_player(player)).target_board.shoot(coord)
+        outcome = ShotOutcome.HIT if hit else ShotOutcome.MISS
+        self.states.get(self.other_player(player)).target_board.shoot(coord, outcome=outcome)
         return (hit, pship)
 
     def print_ship_boards(self):

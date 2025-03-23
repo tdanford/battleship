@@ -110,7 +110,7 @@ class Spot:
 
     def shot_char(self) -> str:
         if self.is_shot:
-            if self.ship is not None:
+            if self.shot_outcome == ShotOutcome.HIT: 
                 return "X"
             else:
                 return "o"
@@ -126,9 +126,13 @@ class Spot:
         else:
             return " "
 
-    def shoot(self) -> ShotOutcome:
-        self.shot_outcome = ShotOutcome.HIT if self.ship else ShotOutcome.MISS
-        return self.shot_outcome
+    def shoot(self, outcome: Optional[ShotOutcome] = None) -> ShotOutcome:
+        if outcome is not None: 
+            self.shot_outcome = outcome
+            return outcome
+        else:
+            self.shot_outcome = ShotOutcome.HIT if self.ship else ShotOutcome.MISS
+            return self.shot_outcome
 
     @property
     def coord(self) -> str:
@@ -142,11 +146,12 @@ class Spot:
             isinstance(other, Spot)
             and self.row == other.row
             and self.col == other.col
-            and self.is_shot == other.is_shot
+            and self.shot_outcome == other.shot_outcome 
+            and self.ship == other.ship
         )
 
     def __hash__(self) -> int:
-        return hash((self.row, self.col))
+        return hash((self.row, self.col, self.shot_outcome, self.ship))
 
 
 coord_re = re.compile("([A-J])(\\d{1,2})")
@@ -378,10 +383,10 @@ class Board:
     def unshot_spots(self) -> List[str]:
         return [spot.coord for row in self.spots for spot in row if not spot.is_shot]
 
-    def shoot(self, coord: str) -> Tuple[bool, Optional[PlacedShip]]:
+    def shoot(self, coord: str, outcome: Optional[ShotOutcome] = None) -> Tuple[bool, Optional[PlacedShip]]:
         spot = self[coord]
         first_remaining = spot.count_remaining()
-        outcome = spot.shoot()
+        outcome = spot.shoot(outcome=outcome)
         hit = outcome == ShotOutcome.HIT
         second_remaining = spot.count_remaining()
         if first_remaining > 0 and second_remaining == 0:
